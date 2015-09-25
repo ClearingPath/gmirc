@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package gMIRC;
+
+option java_multiple_files = true;
+option java_package = "gMIRC";
+option java_outer_classname = "gMIRC_proto";
+
+service grpcMIRC {
+    rpc Join (UserChannel) returns (ResCode) {}
+    rpc RegUser(Username) returns (ResCode) {}
+    rpc Leave(UserChannel) returns (ResCode) {}
+    rpc Exit(Username) returns (ResCode) {}
+    rpc Message(UserMessage) returns (ResCode) {}
+    rpc RegularUpdates(Username) returns(UpdateString) {}
+}
+
+message Username {
+    string username = 1;
+}
+message UserChannel {
+    string username = 1;
+    string channelname = 2;
+}
+message UserMessage {
+    string username = 1;
+    string channelname = 2;
+    string msg = 3;
+}
+message ResCode {
+    int32 responseCode = 1;
+}
+message UpdateString{
+    string newMessages = 1;
+}
