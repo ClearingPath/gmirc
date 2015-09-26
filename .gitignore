@@ -1,2 +1,5 @@
 /gMIRC_client/nbproject/private/
 /gMIRC_server/nbproject/private/
+/gMIRC_client/build/
+/gMIRC_server/build/
+/gMIRC_maven_client/target/
