@@ -251,7 +251,15 @@ public class gMIRC_client {
       };
 
       new Thread(updateThread).start();
-
+      
+      Runnable perform;
+      perform = new Runnable() {
+          public void run(){
+              perform();
+          }
+      };
+      
+      new Thread(perform).start();
 	    //perform(transport, client);
     } catch (Exception E) {
       E.printStackTrace();
