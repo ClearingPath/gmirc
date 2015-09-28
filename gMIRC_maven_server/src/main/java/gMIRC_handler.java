@@ -51,8 +51,6 @@ public class gMIRC_handler implements grpcMIRCGrpc.grpcMIRC {
 
   @Override
   public void leave(UserChannel request, StreamObserver<ResCode> responseObserver) {
-    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    
     int responseCode = DeleteChannelUser(request.getChannelname(), request.getUsername());
     ResCode reply = ResCode.newBuilder().setResponseCode(responseCode).build();
     responseObserver.onValue(reply);
@@ -162,8 +160,11 @@ public class gMIRC_handler implements grpcMIRCGrpc.grpcMIRC {
       DBCursor cursor = coll.find(query);
 
       try {
+          ret = 1;
 	while (cursor.hasNext()) {
+          ret = 1;
 	  coll.remove(cursor.next());
+          ret = 0;
 	}
       } finally {
 	cursor.close();
@@ -408,7 +409,7 @@ public class gMIRC_handler implements grpcMIRCGrpc.grpcMIRC {
   }
 
   private int PutMessageWild(String username, String msg) {
-    int ret = 0;
+    int ret = 1;
 
     try {
       MongoClient mongoClient = new MongoClient();
@@ -422,7 +423,7 @@ public class gMIRC_handler implements grpcMIRCGrpc.grpcMIRC {
 	  ret = 1;
 	  BasicDBObject temp = (BasicDBObject) cursor.next();
 	  String channelname = temp.getString("channel");
-	  ret = PutMessage(username, channelname, msg);
+	  ret = ret & PutMessage(username, channelname, msg);
 	}
       } finally {
 	cursor.close();
@@ -431,7 +432,7 @@ public class gMIRC_handler implements grpcMIRCGrpc.grpcMIRC {
       Logger.getLogger(gMIRC_handler.class.getName()).log(Level.SEVERE, null, ex);
     }
 
-    return 0;
+    return ret;
   }
   
 

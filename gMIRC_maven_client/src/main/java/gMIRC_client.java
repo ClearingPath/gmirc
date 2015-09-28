@@ -90,33 +90,47 @@ public class gMIRC_client {
       String resSplit[] = command.split(" ", 2);
       String commandWord = resSplit[0].toUpperCase();
       
+      String remSplit = "";
       switch (commandWord) {
 	case "/NICK":
-	  System.out.println("# Registering user: " + resSplit[1]);
-	  usernameMsg = Username.newBuilder().setUsername(resSplit[1]).build();
+            if (resSplit.length == 1){
+                System.out.print("!!!: Enter username: ");
+                remSplit = input.nextLine();
+            } else {
+                remSplit = resSplit[1];
+            }
+	  System.out.println("# Registering user: " + remSplit );
+	  usernameMsg = Username.newBuilder().setUsername(remSplit ).build();
 	  res = blockingStub.regUser(usernameMsg);
 
 	  if (res.getResponseCode() == 0) {
-	    System.out.println("# Registered user: " + resSplit[1]);
-	    username = resSplit[1];
+	    System.out.println("# Registered user: " + remSplit );
+	    username = remSplit ;
 	  } else if (res.getResponseCode() == 2) {
-	    System.out.println("# Login as user: " + resSplit[1]);
-	    username = resSplit[1];
+	    System.out.println("# Login as user: " +remSplit );
+	    username = remSplit ;
 	  } else {
 	    System.out.println("!!!: Unidentified error on register!");
 	  }
 	  break;
 	  
 	case "/JOIN":
-	  System.out.println("# Checking channel: " + resSplit[1]);
-	  userchannelMsg = UserChannel.newBuilder().setUsername(username).setChannelname(resSplit[1]).build();
+            if (resSplit.length == 1){
+                System.out.print("!!!: Enter channel name: ");
+                remSplit = input.nextLine();
+            }else {
+                remSplit = resSplit[1];
+            }
+            
+	  System.out.println("# Checking channel: " + remSplit);
+	  userchannelMsg = UserChannel.newBuilder().setUsername(username).setChannelname(remSplit).build();
 	  res = blockingStub.join(userchannelMsg);
 	  
 	  if (res.getResponseCode() == 0 || res.getResponseCode() == 2) {
-	    System.out.println("# Joined channel: " + resSplit[1]);
+	    System.out.println("# Joined channel: " + remSplit);
 	  } else {
 	    if (res.getResponseCode() == 1) {
-	      System.out.println("!!!: Channel " + resSplit[1] + " already joined!");
+	      System.out.println("!!!: Channel " + remSplit + " already joined!");
 	    } else {
 	      System.out.println("!!!: code #" + res + " on channel join");
 	    }
@@ -124,12 +138,18 @@ public class gMIRC_client {
 
 	  break;
 	case "/LEAVE":
+            if (resSplit.length == 1){
+                System.out.print("!!!: Enter channel name: ");
+                remSplit = input.nextLine();
+            }else {
+                remSplit = resSplit[1];
+            }
 	  if (username.isEmpty()) {
 	    System.out.println("!!!: Unregistered user");
 	  } else {
-	    System.out.println("# " + username + " exiting channel " + resSplit[1]);
+	    System.out.println("# " + username + " exiting channel " + remSplit);
 	    
-	    userchannelMsg = UserChannel.newBuilder().setUsername(username).setChannelname(resSplit[1]).build();
+	    userchannelMsg = UserChannel.newBuilder().setUsername(username).setChannelname(remSplit).build();
 	    res = blockingStub.leave(userchannelMsg);
 	    if (res.getResponseCode() == 0) {
 	      System.out.println("# Success");
@@ -156,7 +176,13 @@ public class gMIRC_client {
 
 	default:
 	  if (resSplit[0].startsWith("@")) { // message to channel 
-	    usermessageMsg = UserMessage.newBuilder().setUsername(username).setChannelname(resSplit[0].substring(1)).setMsg(resSplit[1]).build();
+            if (resSplit.length == 1){
+                System.out.print("!!!: Input message: ");
+                remSplit = input.nextLine();
+            }else {
+                remSplit = resSplit[1];
+            }
+	    usermessageMsg = UserMessage.newBuilder().setUsername(username).setChannelname(resSplit[0].substring(1)).setMsg(remSplit).build();
 	    
 	    res = blockingStub.message(usermessageMsg);
 	    
@@ -171,7 +197,7 @@ public class gMIRC_client {
 	    if (res.getResponseCode() == 0) {
 	      System.out.println("# Msg to all channels sent");
 	    } else {
-	      System.out.println("!!!: Connection problemo?");
+	      System.err.println("!!!: Failed to send message to all channel. Error Code #"+ res.getResponseCode());
 	    }
 
 	  }
