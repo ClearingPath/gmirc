@@ -89,7 +89,7 @@ public class gMIRC_client {
 
       String resSplit[] = command.split(" ", 2);
       String commandWord = resSplit[0].toUpperCase();
-
+      
       switch (commandWord) {
 	case "/NICK":
 	  System.out.println("# Registering user: " + resSplit[1]);
