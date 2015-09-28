@@ -9,8 +9,8 @@ $ mongod
 
 Berikutnya, menjalankan aplikasi dengan perintah-perintah berikut pada terminal yang berbeda dengan perintah berikut;
 ```sh
-$ java -jar "mini_mirc_server.jar"
-$ java -jar "mini_mirc_client.jar"
+$ java -jar "gMIRC_maven_server-1.0.jar"
+$ java -jar "gMIRC_maven_client-1.0.jar"
 ```
 
 ## Penggunaan Program
