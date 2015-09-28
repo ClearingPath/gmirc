@@ -148,6 +148,7 @@ public class gMIRC_client {
 	    username = "";
 	    exit = true;
 	    update = false;
+            System.exit(0);
 	  } else {
 	    System.out.println("!!!: Channel error! Error code #" + res);
 	  }

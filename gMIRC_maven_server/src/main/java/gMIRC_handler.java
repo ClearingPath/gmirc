@@ -61,10 +61,8 @@ public class gMIRC_handler implements grpcMIRCGrpc.grpcMIRC {
 
   @Override
   public void exit(Username request, StreamObserver<ResCode> responseObserver) {
-    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     System.out.println(request.getUsername() + " exiting...");
-//        return SoftDelete(username);
-    ResCode reply = ResCode.newBuilder().setResponseCode(0).build();
+    ResCode reply = ResCode.newBuilder().setResponseCode(SoftDelete(request.getUsername())).build();
     responseObserver.onValue(reply);
     responseObserver.onCompleted();
   }
@@ -299,7 +297,7 @@ public class gMIRC_handler implements grpcMIRCGrpc.grpcMIRC {
    * @param username
    * @return code
    */
-  public int SoftDelete(String username) {
+  public static int SoftDelete(String username) {
     int ret = 0;
     try {
       MongoClient mongoClient = new MongoClient();
@@ -435,5 +433,6 @@ public class gMIRC_handler implements grpcMIRCGrpc.grpcMIRC {
 
     return 0;
   }
+  
 
 }

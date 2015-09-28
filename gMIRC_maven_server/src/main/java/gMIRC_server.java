@@ -122,7 +122,7 @@ public class gMIRC_server {
 	  long timestamp_temp = time_temp.getTime();
 	  if (timestamp_temp < treshold) {
 	    String target = temp.getString("username");
-	    //handler.SoftDelete(target);
+	    gMIRC_handler.SoftDelete(target);
 	  }
 	}
 	HardClean();
