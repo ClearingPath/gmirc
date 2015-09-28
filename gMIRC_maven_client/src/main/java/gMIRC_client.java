@@ -165,7 +165,7 @@ public class gMIRC_client {
 	      System.out.println("!!!: Not member of channel " + resSplit[0].substring(1));
 	    }
 	  } else {
-	    usermessageMsg = UserMessage.newBuilder().setUsername(username).setChannelname("*").setMsg(resSplit[1]).build();
+	    usermessageMsg = UserMessage.newBuilder().setUsername(username).setChannelname("*").setMsg(command).build();
 	    res = blockingStub.message(usermessageMsg);
 	    if (res.getResponseCode() == 0) {
 	      System.out.println("# Msg to all channels sent");
